@@ -4,7 +4,7 @@
 define('APP_ENV',      'development'); // 'production' in prod
 define('APP_NAME',     'ReelProof');
 define('APP_VERSION',  '1.0.0');
-define('APP_URL',      'http://localhost/reelproof/public');
+define('APP_URL',      'http://localhost/reelproof/public'); // removing /public causes issues with routing
 define('APP_DEBUG',    true);
 
 // ─── Database ────────────────────────────────────────────────────────────────

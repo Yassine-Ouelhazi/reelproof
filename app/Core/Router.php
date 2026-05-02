@@ -59,6 +59,13 @@ class Router
 
                 // Run middleware
                 foreach ($route['middleware'] as $middlewareClass) {
+                    // Ensure middleware class exists before instantiation
+                    if (!class_exists($middlewareClass)) {
+                        throw new RuntimeException(
+                            "Middleware '{$middlewareClass}' not found. " .
+                            "Expected file: app/Middleware/{$middlewareClass}.php"
+                        );
+                    }
                     $mw = new $middlewareClass();
                     $mw->handle($request);
                 }
@@ -83,7 +90,16 @@ class Router
         }
 
         if (!class_exists($class)) {
-            throw new RuntimeException("Controller {$class} not found.");
+            throw new RuntimeException(
+                "Controller '{$class}' not found. " .
+                "Expected file: app/Controllers/{$class}.php"
+            );
+        }
+
+        if (!method_exists($class, $method)) {
+            throw new RuntimeException(
+                "Method '{$method}' not found in controller '{$class}'."
+            );
         }
 
         $controller = new $class();
