@@ -421,7 +421,7 @@ Database stores roles as ENUM:
 
 ```php
 // Base Model class defines:
-$model->find($id)                          // SELECT * WHERE id = ?
+$model->find($id)                         // SELECT * WHERE id = ?
 $model->findBy($column, $value)           // SELECT * WHERE column = ?
 $model->findAllBy($column, $value)        // SELECT * WHERE column = ? (multiple)
 $model->all($orderBy)                     // SELECT * ORDER BY
