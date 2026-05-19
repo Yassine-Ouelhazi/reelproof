@@ -1,3 +1,32 @@
+# Project Documentation — ReelProof (concise)
+
+Overview:
+
+- This repository contains a Django rewrite of the original ReelProof application. The codebase is organized into Django apps: `home`, `products`, `brands`, `reviews`, `accounts`.
+
+Key locations:
+
+- Django project: `reelproof_django/`
+- Apps: `reelproof_django/home`, `reelproof_django/products`, `reelproof_django/brands`, `reelproof_django/reviews`, `reelproof_django/accounts`
+- Templates: `reelproof_django/templates/`
+- Static: `reelproof_django/static/`
+
+Important routes (examples):
+
+- `/` — home product feed
+- `/explore/` — explore page
+- `/search/` — search
+- `/category/<slug>/` — category
+- `/brands/` and `/brands/<slug>/` — brands
+- `/products/` and `/products/<slug>/` — products
+- `/reviews/` — reviews
+- `/accounts/*` — auth/profile flows
+
+Notes:
+
+- Redundant and PHP-specific docs were removed from the root and consolidated here. The repository root no longer contains PHP entry points.
+- For migrations, fixtures, and environment-specific configuration see `reelproof_django/README_DJANGO.md`.
+
 # ReelProof - Complete Project Documentation
 
 **Version:** v0.0.0 (Configuration Phase)  

@@ -1,0 +1,47 @@
+{% extends 'base.html' %} {% block content %}
+<section class="section brand-detail">
+  <div class="page-header">
+    <div>
+      <h2>{{ object.name }}</h2>
+      {% if object.website %}
+      <p><a href="{{ object.website }}" target="_blank">Visit website</a></p>
+      {% endif %}
+      <p>{{ object.description }}</p>
+    </div>
+    <a href="{% url 'brand-list' %}" class="btn btn-ghost">Back to Brands</a>
+  </div>
+
+  <section class="brand-products">
+    <h3>Products</h3>
+    {% if products %}
+    <div class="product-grid">
+      {% for product in products %}
+      <article class="product-card">
+        <a href="{% url 'product-detail' product.slug %}">
+          {% if product.image %}
+          <img
+            src="{{ product.image }}"
+            alt="{{ product.name }}"
+            class="product-card-image"
+          />
+          {% endif %}
+          <div class="product-card-body">
+            <h3>{{ product.name }}</h3>
+            <div class="product-card-meta">
+              <span
+                >{{ product.review_set.filter(status='published').count }}
+                reviews</span
+              >
+              <span>{{ product.category.name }}</span>
+            </div>
+          </div>
+        </a>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state"><p>No active products for this brand.</p></div>
+    {% endif %}
+  </section>
+</section>
+{% endblock %}

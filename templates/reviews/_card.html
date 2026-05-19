@@ -1,0 +1,39 @@
+<article class="review-card">
+  <div class="review-card-video">
+    {% if review.thumbnail %}
+    <img src="{{ review.thumbnail }}" alt="{{ review.title }}" />
+    {% else %}
+    <div class="review-card-placeholder">▶</div>
+    {% endif %}
+    <div class="review-card-overlay">
+      <span class="play-btn">▶</span>
+    </div>
+  </div>
+  <div class="review-card-body">
+    <span class="review-product-tag"
+      >{{ review.product.brand.name }} · {{ review.product.category.name
+      }}</span
+    >
+    <div class="review-card-title">
+      <a href="{% url 'review-detail' review.pk %}">{{ review.title }}</a>
+    </div>
+    <p>{{ review.description|truncatewords:25 }}</p>
+    <div class="review-card-footer">
+      <div class="reviewer-info">
+        <img
+          src="{{ review.user.avatar|default:'uploads/avatars/default.png' }}"
+          alt="{{ review.user.username }}"
+          class="reviewer-avatar-sm"
+        />
+        <span class="reviewer-name">{{ review.user.username }}</span>
+        {% if review.user.is_verified %}
+        <span class="verified-badge">✓</span>
+        {% endif %}
+      </div>
+      <div class="review-card-stats">
+        <span>👍 {{ review.upvotes }}</span>
+        <span>👎 {{ review.downvotes }}</span>
+      </div>
+    </div>
+  </div>
+</article>

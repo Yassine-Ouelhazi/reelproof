@@ -1,3 +1,30 @@
+# Quick Start — ReelProof (Django)
+
+1. Create and activate a Python virtual environment:
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+2. Install dependencies and run migrations:
+
+```bash
+pip install -r reelproof_django/requirements.txt
+cd reelproof_django
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+3. Development notes:
+
+- Settings default to SQLite; edit `reelproof_django/reelproof_django/settings.py` to change DB.
+- Static files live in `reelproof_django/static/` and templates in `reelproof_django/templates/`.
+- For production, run `python manage.py collectstatic` and use a proper WSGI server.
+
+If you expect to continue PHP work elsewhere, keep it in a separate branch; the root now focuses on the Django port.
+
 # ReelProof Quick Start Guide
 
 ## ✅ Status: Ready to Run!

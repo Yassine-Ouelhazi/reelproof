@@ -1,0 +1,44 @@
+{% extends 'base.html' %} {% block content %}
+<section class="home-search">
+  <header>
+    <h1>{% if query %}Results for "{{ query }}"{% else %}Search{% endif %}</h1>
+  </header>
+
+  <form method="get" action="{% url 'search' %}" class="search-form">
+    <input
+      type="search"
+      name="q"
+      value="{{ query }}"
+      placeholder="Search products, brands, reviews…"
+    />
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+
+  {% if query and not results.products and not results.reviews %}
+  <div class="empty-state"><p>No results found for "{{ query }}".</p></div>
+  {% endif %} {% if results.products %}
+  <section class="search-section">
+    <h2>Products ({{ results.products|length }})</h2>
+    <div class="product-grid">
+      {% for product in results.products %}
+      <article class="product-card">
+        <a href="{% url 'product-detail' product.slug %}">
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.brand.name }}</p>
+          <small>{{ product.review_count }} reviews</small>
+        </a>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %} {% if results.reviews %}
+  <section class="search-section">
+    <h2>Reviews ({{ results.reviews|length }})</h2>
+    <div class="review-grid">
+      {% for review in results.reviews %} {% include 'reviews/_card.html' with
+      review=review %} {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</section>
+{% endblock %}

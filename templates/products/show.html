@@ -1,0 +1,55 @@
+{% extends 'base.html' %} {% block content %}
+<section class="product-hero">
+  <div class="product-header">
+    <div>
+      <a href="{% url 'brand-detail' object.brand.slug %}" class="link-muted"
+        >← {{ object.brand.name }}</a
+      >
+      <h1>{{ object.name }}</h1>
+      <p class="product-meta">
+        {% if object.category %}
+        <span class="tag">{{ object.category.name }}</span>
+        {% endif %}
+        <span>{{ review_count }} reviews</span>
+        <span>Rating {{ avg_rating|floatformat:1|default:'N/A' }}</span>
+      </p>
+    </div>
+    <div class="product-actions">
+      {% if user.is_authenticated and user.role == 'reviewer' %}
+      <a href="{% url 'review-create' %}" class="btn btn-primary"
+        >Review this product</a
+      >
+      {% endif %}
+    </div>
+  </div>
+
+  {% if object.image %}
+  <div class="product-image">
+    <img src="{{ object.image }}" alt="{{ object.name }}" />
+  </div>
+  {% endif %}
+
+  <div class="product-description">
+    <p>{{ object.description }}</p>
+  </div>
+</section>
+
+<section class="review-list-section">
+  <h2>Reviews</h2>
+  {% if reviews %}
+  <div class="review-grid">
+    {% for r in reviews %} {% include 'reviews/_card.html' with review=r %} {%
+    endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <p>No reviews yet for this product.</p>
+    {% if user.is_authenticated and user.role == 'reviewer' %}
+    <a href="{% url 'review-create' %}" class="btn btn-primary"
+      >Be the first to review</a
+    >
+    {% endif %}
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

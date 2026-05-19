@@ -1,0 +1,59 @@
+{% extends 'base.html' %} {% block content %}
+<section class="section">
+  <div class="page-header">
+    <h2>Products</h2>
+    <form class="search-form" method="get" action="{% url 'product-search' %}">
+      <input
+        type="search"
+        name="q"
+        placeholder="Search products..."
+        value="{{ request.GET.q }}"
+      />
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+  </div>
+
+  {% if categories %}
+  <div class="category-filter-strip">
+    <a
+      href="{% url 'product-list' %}"
+      class="tag {% if not category %}active{% endif %}"
+      >All</a
+    >
+    {% for cat in categories %}
+    <a
+      href="{% url 'category-detail' cat.slug %}"
+      class="tag {% if category and category.slug == cat.slug %}active{% endif %}"
+      >{{ cat.icon }} {{ cat.name }}</a
+    >
+    {% endfor %}
+  </div>
+  {% endif %} {% if products %}
+  <div class="product-grid">
+    {% for p in products %}
+    <article class="product-card">
+      <a href="{% url 'product-detail' p.slug %}">
+        {% if p.image %}
+        <img
+          src="{{ p.image }}"
+          alt="{{ p.name }}"
+          class="product-card-image"
+        />
+        {% endif %}
+        <div class="product-card-body">
+          <h3>{{ p.name }}</h3>
+          <p>{{ p.brand.name }}</p>
+          <div class="product-card-meta">
+            <span>{{ p.review_count }} reviews</span>
+            <span>Rating {{ p.avg_rating|floatformat:1 }}</span>
+          </div>
+        </div>
+      </a>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state"><p>No products found.</p></div>
+  {% endif %}
+</section>
+{% endblock %}

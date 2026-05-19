@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% block content %}
+<section class="section">
+  <div class="page-header">
+    <h2>Brands</h2>
+  </div>
+
+  {% if brands %}
+  <div class="brand-grid">
+    {% for b in brands %}
+    <article class="brand-card">
+      <a href="{% url 'brand-detail' b.slug %}">
+        <h3>{{ b.name }}</h3>
+      </a>
+      <p>{{ b.product_count }} products • {{ b.review_count }} reviews</p>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state"><p>No brands available.</p></div>
+  {% endif %}
+</section>
+{% endblock %}

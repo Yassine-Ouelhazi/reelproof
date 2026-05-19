@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% block content %}
+<section class="home-category">
+  <header>
+    <span class="category-icon">{{ category.icon }}</span>
+    <h1>{{ category.name }}</h1>
+    <p>{{ category.product_count }} products</p>
+  </header>
+
+  {% if feed %}
+  <div class="review-grid">
+    {% for review in feed %} {% include 'reviews/_card.html' with review=review
+    %} {% endfor %}
+  </div>
+  {% if feed.has_other_pages %}
+  <div class="pagination">
+    {% if feed.has_previous %}<a href="?page={{ feed.previous_page_number }}"
+      >Previous</a
+    >{% endif %} {% if feed.has_next %}<a
+      href="?page={{ feed.next_page_number }}"
+      >Next</a
+    >{% endif %}
+  </div>
+  {% endif %} {% else %}
+  <div class="empty-state"><p>No reviews in this category yet.</p></div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% load static %}
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ReelProof</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+    />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <script defer src="{% static 'js/main.js' %}"></script>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container-wide">
+        <a href="{% url 'home' %}" class="navbar-brand">
+          <span class="brand-icon">▶</span>
+          <span>Reel<strong>Proof</strong></span>
+        </a>
+
+        <div class="navbar-search">
+          <form action="{% url 'search' %}" method="get">
+            <input
+              type="search"
+              name="q"
+              placeholder="Search products, brands, reviews…"
+              value="{{ request.GET.q|default:'' }}"
+            />
+            <button type="submit">⌕</button>
+          </form>
+        </div>
+
+        <div class="navbar-links">
+          <a href="{% url 'explore' %}">Explore</a>
+          <a href="{% url 'brand-list' %}">Brands</a>
+          <a href="{% url 'product-list' %}">Products</a>
+          {% if user.is_authenticated %} {% if user.role == 'reviewer' %}
+          <a href="{% url 'review-create' %}" class="btn btn-post"
+            >+ Post Review</a
+          >
+          {% endif %}
+          <div class="navbar-user">
+            <img
+              src="{{ user.avatar|default:'uploads/avatars/default.png' }}"
+              alt="{{ user.username }}"
+              class="navbar-avatar"
+            />
+            <div class="dropdown">
+              <a href="{% url 'dashboard' %}">Dashboard</a>
+              <a href="{% url 'profile-detail' username=user.username %}"
+                >Profile</a
+              >
+              <a href="{% url 'profile-settings' %}">Settings</a>
+              <a href="{% url 'logout' %}" class="dropdown-logout">Logout</a>
+            </div>
+          </div>
+          {% else %}
+          <a href="{% url 'login' %}" class="btn btn-ghost">Login</a>
+          <a href="{% url 'register' %}" class="btn btn-primary">Join Free</a>
+          {% endif %}
+        </div>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </nav>
+
+    {% if messages %} {% for message in messages %}
+    <div class="flash {% if message.tags %}flash-{{ message.tags }}{% endif %}">
+      {{ message }}
+    </div>
+    {% endfor %} {% endif %}
+
+    <main class="container-wide">{% block content %}{% endblock %}</main>
+
+    <footer class="footer">
+      <div class="footer-inner container-wide">
+        <div class="footer-brand">
+          <span class="brand-icon">▶</span>
+          <span>Reel<strong>Proof</strong></span>
+          <p>Real video reviews. Real people. Real trust.</p>
+        </div>
+        <div class="footer-links">
+          <div>
+            <h4>Discover</h4>
+            <a href="{% url 'explore' %}">Explore</a>
+            <a href="{% url 'brand-list' %}">Brands</a>
+            <a href="{% url 'product-list' %}">Products</a>
+          </div>
+          <div>
+            <h4>Join</h4>
+            <a href="{% url 'register' %}">Become a Reviewer</a>
+            <a href="{% url 'register' %}">Register as Brand</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom container-wide">
+        <p>© {% now "Y" %} ReelProof. Built with purpose.</p>
+      </div>
+    </footer>
+  </body>
+</html>

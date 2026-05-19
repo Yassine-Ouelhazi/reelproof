@@ -1,0 +1,99 @@
+{% extends 'base.html' %} {% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <span class="hero-badge">🎬 Video Reviews You Can Trust</span>
+      <h1>See it. <em>Believe it.</em><br />Buy smart.</h1>
+      <p>
+        Real people. Real products. Real video reviews — rated for honesty, not
+        paid for opinions.
+      </p>
+      <div class="hero-cta">
+        <a href="{% url 'explore' %}" class="btn btn-primary btn-lg"
+          >Explore Reviews</a
+        >
+        <a href="{% url 'register' %}" class="btn btn-ghost btn-lg"
+          >Become a Reviewer</a
+        >
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-pill">🎥 Video-first reviews</div>
+      <div class="stat-pill">⭐ Credibility scoring</div>
+      <div class="stat-pill">🎁 Earn rewards</div>
+    </div>
+  </div>
+</section>
+
+<section class="section categories">
+  <div class="section-header">
+    <h2>Browse by Category</h2>
+  </div>
+  <div class="category-grid">
+    {% for cat in categories %}
+    <a href="{% url 'home-category' cat.slug %}" class="category-card">
+      <span class="cat-icon">{{ cat.icon }}</span>
+      <span class="cat-name">{{ cat.name }}</span>
+      <span class="cat-count">{{ cat.product_count }} products</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section section-feed">
+  <div class="section-header">
+    <h2>Latest Reviews</h2>
+    <div class="sort-tabs">
+      <a
+        href="?sort=latest"
+        class="sort-tab {% if sort == 'latest' %}active{% endif %}"
+        >Latest</a
+      >
+      <a
+        href="?sort=trending"
+        class="sort-tab {% if sort == 'trending' %}active{% endif %}"
+        >Trending</a
+      >
+      <a
+        href="?sort=top"
+        class="sort-tab {% if sort == 'top' %}active{% endif %}"
+        >Top Rated</a
+      >
+    </div>
+  </div>
+  {% if feed %}
+  <div class="review-grid">
+    {% for review in feed %} {% include 'reviews/_card.html' with review=review
+    %} {% endfor %}
+  </div>
+  {% if feed.has_other_pages %}
+  <div class="pagination">
+    {% if feed.has_previous %}<a
+      href="?page={{ feed.previous_page_number }}&sort={{ sort }}"
+      >Previous</a
+    >{% endif %} {% if feed.has_next %}<a
+      href="?page={{ feed.next_page_number }}&sort={{ sort }}"
+      >Next</a
+    >{% endif %}
+  </div>
+  {% endif %} {% else %}
+  <div class="empty-state"><p>No reviews available yet.</p></div>
+  {% endif %}
+</section>
+
+{% if top_brands %}
+<section class="section section-brands">
+  <div class="section-header">
+    <h2>Featured Brands</h2>
+    <a href="{% url 'brand-list' %}" class="see-all">See all →</a>
+  </div>
+  <div class="brands-strip">
+    {% for brand in top_brands %}
+    <a href="{% url 'brand-detail' brand.slug %}" class="brand-pill">
+      <span>{{ brand.logo|default:'🏷' }}</span>
+      <span>{{ brand.name }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %} {% endblock %}

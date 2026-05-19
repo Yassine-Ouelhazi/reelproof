@@ -1,0 +1,119 @@
+{% extends 'base.html' %} {% block content %}
+<section class="dashboard-page">
+  <div class="dashboard-header">
+    <div class="profile-summary">
+      <img
+        src="{{ user.avatar }}"
+        alt="{{ user.username }}"
+        class="dashboard-avatar"
+      />
+      <div>
+        <h1>Hey, {{ user.username }} 👋</h1>
+        <p>
+          {% if user.role == 'reviewer' %}Reviewer Account{% else %}Buyer
+          Account{% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  {% if user.role == 'reviewer' %}
+  <div class="stats-grid">
+    <div class="stat-card">
+      <strong>{{ reviews|length }}</strong>
+      <small>Reviews Posted</small>
+    </div>
+    <div class="stat-card">
+      <strong>{{ user.credibility_score }}%</strong>
+      <small>Credibility Score</small>
+    </div>
+    <div class="stat-card">
+      <strong>{{ user.points }}</strong>
+      <small>Points Earned</small>
+    </div>
+    <div class="stat-card">
+      <strong>{{ reviews|sum:'views' }}</strong>
+      <small>Total Views</small>
+    </div>
+  </div>
+
+  <div class="dashboard-actions">
+    <a href="{% url 'review-create' %}" class="btn btn-primary"
+      >+ Post New Review</a
+    >
+    <a
+      href="{% url 'profile-detail' username=user.username %}"
+      class="btn btn-ghost"
+      >View Profile</a
+    >
+    <a href="{% url 'profile-settings' %}" class="btn btn-ghost">Settings</a>
+  </div>
+
+  <div class="dashboard-section">
+    <h2>My Reviews</h2>
+    {% if reviews %}
+    <div class="review-list">
+      {% for review in reviews %}
+      <div class="review-list-item">
+        {% if review.thumbnail %}
+        <img
+          src="{{ review.thumbnail }}"
+          alt="{{ review.title }}"
+          class="review-list-thumb"
+        />
+        {% else %}
+        <div class="review-list-thumb-placeholder">▶</div>
+        {% endif %}
+        <div class="review-list-info">
+          <a href="{% url 'review-detail' review.pk %}"
+            ><strong>{{ review.title }}</strong></a
+          >
+          <small
+            >{{ review.product.brand.name }} · {{ review.product.name }}</small
+          >
+          <div class="review-list-stats">
+            <span>👁 {{ review.views }}</span>
+            <span>👍 {{ review.upvotes }}</span>
+            <span>👎 {{ review.downvotes }}</span>
+            <span>{{ review.created_at|date:'M j, Y' }}</span>
+          </div>
+        </div>
+        <div class="review-list-actions">
+          <a
+            href="{% url 'review-edit' review.pk %}"
+            class="btn btn-ghost btn-xs"
+            >Edit</a
+          >
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <p>
+        No reviews yet.
+        <a href="{% url 'review-create' %}">Post your first review →</a>
+      </p>
+    </div>
+    {% endif %}
+  </div>
+  {% else %}
+  <div class="dashboard-actions">
+    <a href="{% url 'explore' %}" class="btn btn-primary">🔍 Explore Reviews</a>
+    <a href="{% url 'product-list' %}" class="btn btn-ghost"
+      >📦 Browse Products</a
+    >
+    <a href="{% url 'profile-settings' %}" class="btn btn-ghost">⚙ Settings</a>
+  </div>
+
+  <div class="dashboard-card">
+    <div class="dashboard-card-icon">🛒</div>
+    <h2>Find your next purchase</h2>
+    <p>Watch honest video reviews from real people before you buy anything.</p>
+    <a href="{% url 'explore' %}" class="btn btn-primary btn-lg"
+      >Explore Reviews →</a
+    >
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %} {% block content %}
+<article class="review-detail">
+  <header>
+    <h1>{{ object.title }}</h1>
+    <p>
+      By <strong>{{ object.user.username }}</strong> • Rating {{ object.rating
+      }} / 5
+    </p>
+  </header>
+
+  {% if object.thumbnail %}
+  <img
+    src="{{ object.thumbnail }}"
+    alt="{{ object.title }}"
+    class="review-thumbnail"
+  />
+  {% endif %}
+
+  <section class="review-body">
+    <p>{{ object.description }}</p>
+  </section>
+
+  <section class="review-meta">
+    <p>
+      Product:
+      <a href="{% url 'product-detail' object.product.slug %}"
+        >{{ object.product.name }}</a
+      >
+    </p>
+    <p>
+      Brand:
+      <a href="{% url 'brand-detail' object.product.brand.slug %}"
+        >{{ object.product.brand.name }}</a
+      >
+    </p>
+    <p>
+      Views: {{ object.views }} • Upvotes: {{ object.upvotes }} • Downvotes: {{
+      object.downvotes }}
+    </p>
+    {% if user.is_authenticated and user == object.user %}
+    <p>
+      <a href="{% url 'review-edit' object.pk %}" class="btn btn-ghost"
+        >Edit Review</a
+      >
+    </p>
+    {% endif %}
+  </section>
+</article>
+{% endblock %}

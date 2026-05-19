@@ -1,0 +1,18 @@
+{% extends 'base.html' %} {% block content %}
+<h2>Brand Dashboard</h2>
+{% if brand %}
+<p>{{ brand.name }}</p>
+<ul>
+  {% for product in products %}
+  <li>{{ product.name }} — {{ product.status }}</li>
+  {% empty %}
+  <li>No products yet.</li>
+  {% endfor %}
+</ul>
+<p><a href="{% url 'brand-product-create' %}">Create Product</a></p>
+{% else %}
+<p>
+  You do not have an associated brand yet. Please register a brand account or
+  contact support.
+</p>
+{% endif %} {% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block content %}
+<section class="section profile-page">
+  <div class="profile-card">
+    <div class="profile-sidebar">
+      <img
+        src="{{ object.avatar|default:'uploads/avatars/default.png' }}"
+        alt="{{ object.username }} avatar"
+        class="profile-avatar"
+      />
+      <h2>{{ object.username }}</h2>
+      <p>{{ object.full_name }}</p>
+      <div class="profile-tags">
+        <span class="tag">{{ object.get_role_display }}</span>
+      </div>
+    </div>
+    <div class="profile-body">
+      <div class="profile-entry">
+        <strong>Bio</strong>
+        <p>{{ object.bio|default:'No bio yet.' }}</p>
+      </div>
+      <div class="profile-entry">
+        <strong>Points</strong>
+        <p>{{ object.points }}</p>
+      </div>
+      <div class="profile-entry">
+        <strong>Credibility</strong>
+        <p>{{ object.credibility_score }}%</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
